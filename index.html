@@ -7,23 +7,29 @@
   <title>Task Manager</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <script src="main.js" defer></script>
 </head>
 
 <body>
   <h1>TASK MANAGER</h1>
-  <div class="container">
-    <div class="task-list">
-      <div id="tasks"></div>
-      <div class="create-task">
-        <input type="text" id="title" placeholder="Task Title (Required)">
-        <div class="error-message" id="title-error"></div>
-        <input type="text" id="description" placeholder="Task Description">
-        <input type="date" id="deadline" placeholder="Deadline">
-        <button onclick="createTask()">Add Task</button>
+
+  <button id="loginButton">Login with Cognito</button>
+
+  <div id="taskManagerContainer" style="display: none;">
+    <div class="container">
+      <div class="task-list">
+        <div id="tasks"></div>
+        <div class="create-task">
+          <input type="text" id="title" placeholder="Task Title (Required)">
+          <div class="error-message" id="title-error"></div>
+          <input type="text" id="description" placeholder="Task Description">
+          <input type="date" id="deadline" placeholder="Deadline">
+          <button onclick="createTask()">Add Task</button>
+        </div>
       </div>
     </div>
   </div>
+
+  <script src="main.js"></script>
 </body>
 
 </html>

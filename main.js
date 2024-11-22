@@ -1,5 +1,6 @@
 const apiBaseUrl = 'http://localhost:8080/api/tasks';
 
+// Helper function to create tasks
 function createTask() {
   const title = document.getElementById('title').value;
   const description = document.getElementById('description').value;
@@ -17,8 +18,11 @@ function createTask() {
 
   fetch(apiBaseUrl, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(task)
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('access_token')}` // Include token for authentication
+    },
+    body: JSON.stringify(task),
   }).then(() => {
     document.getElementById('title').value = '';
     document.getElementById('description').value = '';
@@ -27,8 +31,13 @@ function createTask() {
   });
 }
 
+// Function to fetch and display tasks
 function fetchTasks() {
-  fetch(apiBaseUrl)
+  fetch(apiBaseUrl, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('access_token')}` // Include token for authentication
+    },
+  })
     .then(response => response.json())
     .then(tasks => {
       const tasksDiv = document.getElementById('tasks');
@@ -37,7 +46,7 @@ function fetchTasks() {
       tasks.forEach(task => {
         const taskHtml = `
           <div class="task-item">
-            <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onclick="toggleTask(${task.id})">
+            <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onclick="toggleTask(${task.id}, ${!task.completed})">
             <div class="task-content">
               <span class="task-title">${task.title}</span>
               <p class="task-description">${task.description}</p>
@@ -50,12 +59,47 @@ function fetchTasks() {
     });
 }
 
-function toggleTask(taskId) {
+// Function to toggle task completion status
+function toggleTask(taskId, isCompleted) {
   fetch(`${apiBaseUrl}/${taskId}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ completed: isCompleted })
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('access_token')}` // Include token for authentication
+    },
+    body: JSON.stringify({ completed: isCompleted }),
   }).then(fetchTasks);
 }
 
-fetchTasks();
+// URL for Cognito login page
+const cognitoUrl = `https://task-manager-app.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=16o4fuqp5o5gdrrmds9255flp1&redirect_uri=${encodeURIComponent('http://localhost:3000/callback')}`;
+
+// Trigger login when button is clicked
+document.getElementById("loginButton")?.addEventListener("click", function () {
+  window.location.href = cognitoUrl;
+});
+
+window.onload = function () {
+  if (!localStorage.getItem('access_token')) {
+    // Show login button if no token found
+    const loginButton = document.getElementById("loginButton");
+    if (loginButton) {
+      loginButton.style.display = "block";
+    }
+    const taskManagerContainer = document.getElementById("taskManagerContainer");
+    if (taskManagerContainer) {
+      taskManagerContainer.style.display = "none";
+    }
+  } else {
+    // Hide login button and show task manager if token exists
+    const loginButton = document.getElementById("loginButton");
+    if (loginButton) {
+      loginButton.style.display = "none";
+    }
+    const taskManagerContainer = document.getElementById("taskManagerContainer");
+    if (taskManagerContainer) {
+      taskManagerContainer.style.display = "block";
+    }
+    fetchTasks(); // Load tasks if logged in
+  }
+};

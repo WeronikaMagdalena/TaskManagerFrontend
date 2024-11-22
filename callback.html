@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager Callback</title>
+</head>
+
+<body>
+  <h1>Callback Page</h1>
+
+  <script>
+    window.onload = function () {
+      // Extract tokens from the URL fragment
+      const urlParams = new URLSearchParams(window.location.hash.slice(1)); // Get the URL fragment after '#'
+      const idToken = urlParams.get('id_token');
+      const accessToken = urlParams.get('access_token');
+
+      if (idToken && accessToken) {
+        // Store the tokens in localStorage
+        localStorage.setItem('id_token', idToken);
+        localStorage.setItem('access_token', accessToken);
+
+        // Redirect to main page (index.html)
+        window.location.href = '/'; // Or wherever your app's home page is
+      } else {
+        console.error('Tokens not found in URL');
+      }
+    };
+  </script>
+</body>
+
+</html>
