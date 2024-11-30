@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+
+<body>
+  <div>
+    Hello:
+    <pre id="email"></pre>
+    Access token:
+    <pre id="access-token"></pre>
+    ID token:
+    <pre id="id-token"></pre>
+    Refresh token:
+    <pre id="refresh-token"></pre>
+  </div>
+
+  <script type="module">
+    import { userManager } from "./oidcConfig.js";
+
+    userManager.signinCallback().then(function (user) {
+      document.getElementById("email").textContent = user.profile?.email;
+      document.getElementById("access-token").textContent = user.access_token;
+      document.getElementById("id-token").textContent = user.id_token;
+      document.getElementById("refresh-token").textContent = user.refresh_token;
+    });
+  </script>
+  <div id="app-container"></div>
+  <h1>TASK MANAGER</h1>
+  <div class="container">
+    <div class="task-list">
+      <div id="tasks"></div>
+      <div class="create-task">
+        <input type="text" id="title" placeholder="Task Title (Required)">
+        <div class="error-message" id="title-error"></div>
+        <input type="text" id="description" placeholder="Task Description">
+        <input type="date" id="deadline" placeholder="Deadline">
+        <button onclick="createTask()">Add Task</button>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+
+</html>
+
+<!-- <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AWS Cognito Demo App</title>
+  <script src="main.js" defer></script>
+</head>
+
+<body>
+  <div>
+    <div>
+      <h1>AWS Cognito Demo App</h1>
+
+      <div sec:authorize="isAuthenticated()">
+        <div>
+          Hello, <strong th:text="${#authentication.name}"></strong>!
+          <br>
+          <br>
+        </div>
+        <div>
+          Here are all the OIDC properties you can use:
+          <div th:text="${#authentication.getPrincipal()}">
+            <br>
+            <br>
+          </div>
+          <div>
+            <a th:href="@{/logout}"><button>Log out</button></a>
+          </div>
+        </div>
+
+        <div sec:authorize="isAnonymous()">
+          <div>
+            <a
+              href="https://task-manager-app.auth.us-east-1.amazoncognito.com/login?client_id=6ql677v8v9pj4jciqlr7elc68c&response_type=code&scope=openid&redirect_uri=http://localhost:3000/login/oauth2/code/cognito">
+              <button>Log in</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+
+</html> -->
