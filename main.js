@@ -1,6 +1,8 @@
 const apiBaseUrl = 'http://localhost:8080/api/tasks';
 const cognitoClientId = '6ql677v8v9pj4jciqlr7elc68c';
-const redirectUri = 'http://localhost:3000//login/oauth2/code/cognito'; // This must match what you set in AWS Cognito
+// ?
+const redirectUri = 'http://localhost:3000/login/oauth2/code/cognito'; // This must match what you set in AWS Cognito
+// ?
 const cognitoLoginUrl = `https://task-manager-app.auth.us-east-1.amazoncognito.com/login?client_id=${cognitoClientId}&response_type=code&scope=openid&redirect_uri=${redirectUri}`;
 
 // Check if the user is logged in
