@@ -60,6 +60,7 @@ function toggleTask(taskId) {
 
 fetchTasks();
 
+// Cognito
 
 import { UserManager } from 'oidc-client-ts';
 
@@ -71,7 +72,6 @@ const cognitoAuthConfig = {
   scope: "email openid profile"
 };
 
-// create a UserManager instance
 export const userManager = new UserManager({
   ...cognitoAuthConfig,
 });
